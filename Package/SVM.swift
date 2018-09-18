@@ -135,7 +135,11 @@ open class SVMModel
         probabilityB = probBArray! as! [Double]
     }
 #endif
-    
+
+    public func getType() -> SVMType {
+        return type
+    }
+
     open func isνFeasableForData(_ data: MLClassificationDataSet) -> Bool
     {
         if (type != .ν_SVM_Classification) { return true }
