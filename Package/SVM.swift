@@ -523,7 +523,7 @@ open class SVMModel
                     if (probability && (type == .c_SVM_Classification || type == .ν_SVM_Classification)) {
                         for j in foldStart[i]..<foldStart[i+1] {
                             let inputs = try data.getInput(perm[j])
-                            target[perm[j]] = subModel.predictProbability(inputs)
+                            (target[perm[j]], _) = subModel.predictProbability(inputs)
                         }
                     }
                     else {
@@ -941,7 +941,7 @@ open class SVMModel
         }
     }
     
-    open func predictProbability(_ inputs: [Double]) -> Double
+    open func predictProbability(_ inputs: [Double]) -> (Double, [Double])
     {
         if ((type == .c_SVM_Classification || type == .ν_SVM_Classification) && probabilityA.count > 0 && probabilityB.count > 0) {
             let data = DataSet(dataType: .classification, inputDimension: inputs.count, outputDimension: 1)
@@ -976,10 +976,10 @@ open class SVMModel
                     maxIndex = i
                 }
             }
-            return Double(labels[maxIndex])
+            return (Double(labels[maxIndex]), probabilityEstimates)
         }
         else {
-            return predictOne(inputs)
+            return (predictOne(inputs), [])
         }
     }
     
