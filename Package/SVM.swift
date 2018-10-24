@@ -84,7 +84,7 @@ open class SVMModel
         coefficients = []
         probabilityA = []
         probabilityB = []
-        kernelParams = KernelParameters(type: .radialBasisFunction, degree: 0, gamma: 0.5, coef0: 0.0)
+        kernelParams = KernelParameters(type: .linear, degree: 0, gamma: 0.5, coef0: 0.0)
         
         //  Read the property list
         let pList = NSDictionary(contentsOfFile: path)
@@ -948,7 +948,7 @@ open class SVMModel
     open func predictProbability(_ inputs: [Double]) -> (Double, [Double])
     {
         if ((type == .c_SVM_Classification || type == .ν_SVM_Classification) && probabilityA.count > 0 && probabilityB.count > 0) {
-            let data = DataSet(dataType: .classification, inputDimension: inputs.count, outputDimension: 1)
+            let data = DataSet(dataType: .regression, inputDimension: inputs.count, outputDimension: 1)
             do {
                 try data.addDataPoint(input: inputs, output: [0.0])
             }
